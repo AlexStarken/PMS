@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "901177246622",
+    "project_id": "bondprojectstart",
+    "storage_bucket": "bondprojectstart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901177246622:android:632500532d0a09f6b84c8f",
+        "android_client_info": {
+          "package_name": "com.example.spectr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-x8uyP0mAkjUj-Pa60JRz01w2UuiYMBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
