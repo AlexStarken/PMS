@@ -39,6 +39,7 @@ class ItemsAdapter(var items: List<Item>, var context: Context): RecyclerView.Ad
         )
 
         holder.image.setImageResource(imageId)
+
     }
 
 

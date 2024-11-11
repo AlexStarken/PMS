@@ -3,6 +3,9 @@ package com.example.spectr
 import OnSwipeTouchListener
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -39,16 +42,10 @@ class ItemsActivity : AppCompatActivity() {
         val ctx = this
         window.decorView.setOnTouchListener(object : OnSwipeTouchListener(ctx) {
 
-            override fun onSwipeTop() {
-                super.onSwipeTop()
-            }
-
-            override fun onSwipeBottom() {
-                super.onSwipeBottom()
-            }
-
             override fun onSwipeLeft() {
-                super.onSwipeLeft()
+                val intent = Intent(ctx, AuthActivity::class.java)
+                startActivity(intent)
+                finish()
             }
 
             override fun onSwipeRight() {
@@ -56,6 +53,20 @@ class ItemsActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+
+            override fun onDoubleTapAction() {
+                val intent = Intent(ctx, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+
+
+
+          //  override fun onTouch(v: View, event: MotionEvent): Boolean {
+          //      Toast.makeText(ctx, "Вы кликнули по экрану, молодец!", Toast.LENGTH_LONG).show()
+          //      return true
+          //  }
         })
 
     }

@@ -1,99 +1,98 @@
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.util.Log
-import android.view.GestureDetector
-import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
-import com.example.spectr.AuthActivity
-import com.example.spectr.MainActivity
 import kotlin.math.abs
 
-open class OnSwipeTouchListener(view: View, ctx: Context) : OnTouchListener {
+open class OnSwipeTouchListener(ctx: Context) : View.OnTouchListener {
 
-    private val gestureDetector: GestureDetector
+    private var lastTouchTime: Long = 0
+    private var lastTouchPoint: Pair<Float, Float>? = null
+    private var isSwiping = false
 
     companion object {
-
-        private val SWIPE_THRESHOLD = 100
-        private val SWIPE_VELOCITY_THRESHOLD = 100
-    }
-
-    init {
-        gestureDetector = GestureDetector(ctx, GestureListener(view))
+        private const val SWIPE_THRESHOLD = 100
+        private const val SWIPE_VELOCITY_THRESHOLD = 100
+        private const val DOUBLE_TAP_TIMEOUT = 300 // Время для определения двойного касания в миллисекундах
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(v: View, event: MotionEvent): Boolean {
-        v.parent.requestDisallowInterceptTouchEvent(true)
-        return gestureDetector.onTouchEvent(event)
-    }
-
-    private inner class GestureListener(private val view: View) : SimpleOnGestureListener() {
-
-
-        override fun onDown(e: MotionEvent): Boolean {
-            return false
-        }
-
-        fun turnOffPropagation() {
-            view.parent.requestDisallowInterceptTouchEvent(true)
-        }
-
-        override fun onFling(
-            e1: MotionEvent?,
-            e2: MotionEvent,
-            velocityX: Float,
-            velocityY: Float
-        ): Boolean {
-
-            if (e1 == null) {
-                return false
-            }
-            Log.w("debug", e1.toString())
-            Log.w("debug", e2.toString())
-            var result = false
-            try {
-                val diffY = e2.y - e1.y
-                val diffX = e2.x - e1.x
-                if (abs(diffX) > abs(diffY)) {
-                    if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                        if (diffX > 0) {
-                            onSwipeRight(::turnOffPropagation)
-                        } else {
-                            onSwipeLeft(::turnOffPropagation)
-                        }
-                        view.parent.requestDisallowInterceptTouchEvent(false)
-                        result = false
-                    }
-                } else if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffY > 0) {
-                        onSwipeBottom(::turnOffPropagation)
-                    } else {
-                        onSwipeTop(::turnOffPropagation)
-                    }
-                    result = false
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                val currentTime = System.currentTimeMillis()
+                if (currentTime - lastTouchTime <= DOUBLE_TAP_TIMEOUT) {
+                    onDoubleTapAction()
                 }
-            } catch (exception: Exception) {
-                exception.printStackTrace()
+                lastTouchTime = currentTime
+                lastTouchPoint = Pair(event.x, event.y)
+                isSwiping = false // Сброс состояния свайпа
             }
 
-            return result
+            MotionEvent.ACTION_MOVE -> {
+                lastTouchPoint?.let { lastPoint ->
+                    val diffX = event.x - lastPoint.first
+                    val diffY = event.y - lastPoint.second
+
+                    // Проверяем, превышает ли движение порог свайпа
+                    if (!isSwiping && (abs(diffX) > SWIPE_THRESHOLD || abs(diffY) > SWIPE_THRESHOLD)) {
+                        isSwiping = true
+                    }
+                }
+            }
+
+            MotionEvent.ACTION_UP -> {
+                if (isSwiping) {
+                    lastTouchPoint?.let { lastPoint ->
+                        val diffX = event.x - lastPoint.first
+                        val diffY = event.y - lastPoint.second
+
+                        // Оценка скорости (приблизительно)
+                        val velocityX = event.x - lastPoint.first // Простой расчет
+                        val velocityY = event.y - lastPoint.second // Простой расчет
+
+                        if (abs(diffX) > abs(diffY)) {
+                            if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                                if (diffX > 0) {
+                                    onSwipeRight()
+                                } else {
+                                    onSwipeLeft()
+                                }
+                            }
+                        } else {
+                            if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                                if (diffY > 0) {
+                                    onSwipeBottom()
+                                } else {
+                                    onSwipeTop()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-
-
+        return true
     }
 
+    open fun onSwipeRight() {
+        Log.d("debug", "Swiped right")
+    }
 
-    open fun onSwipeRight(noPropagate: () -> Unit) {}
+    open fun onSwipeLeft() {
+        Log.d("debug", "Swiped left")
+    }
 
-    open fun onSwipeLeft(noPropagate: () -> Unit) {}
+    open fun onSwipeTop() {
+        Log.d("debug", "Swiped up")
+    }
 
-    open fun onSwipeTop(noPropagate: () -> Unit) {}
+    open fun onSwipeBottom() {
+        Log.d("debug", "Swiped down")
+    }
 
-    open fun onSwipeBottom(noPropagate: () -> Unit) {}
-
-
+    open fun onDoubleTapAction() {
+        Log.d("debug", "Double tap detected")
+    }
 }
