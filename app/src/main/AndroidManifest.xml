@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Spectr"
         tools:targetApi="31">
         <activity
+            android:name=".AddingActivity"
+            android:exported="false" />
+        <activity
             android:name=".Fragment"
             android:exported="false" />
         <activity

@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="20dp"
     android:layout_marginBottom="20dp"
     android:background="#3E3417"
-    >
+    android:orientation="vertical"
+    android:paddingBottom="20dp">
 
     <ImageView
         android:id="@+id/item_list_image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/item_list_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/film" />
 
     <TextView
@@ -22,37 +27,60 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
+        android:text="TextView"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:text="TextView" />
+        app:layout_constraintBottom_toTopOf="@+id/item_list_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/item_list_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
+        android:text="TextView"
         android:textSize="18sp"
-        android:text="TextView" />
+        app:layout_constraintBottom_toTopOf="@+id/item_list_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/item_list_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="end"
         android:paddingHorizontal="20dp"
         android:paddingVertical="10dp"
-        android:textStyle="bold"
+        android:text="TextView"
         android:textSize="25sp"
-        android:gravity="end"
-        android:text="TextView" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/item_list_button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="60dp"
         android:backgroundTint="#BA9730"
-        android:text="В разработке" />
+        android:text="Содержимое"
+        app:layout_constraintBottom_toBottomOf="@+id/item_list_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/item_list_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Удалить" />
 
 
 </LinearLayout>

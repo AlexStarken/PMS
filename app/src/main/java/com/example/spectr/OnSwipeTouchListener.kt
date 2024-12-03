@@ -73,7 +73,9 @@ open class OnSwipeTouchListener(ctx: Context) : View.OnTouchListener {
                 }
             }
         }
-        return true
+
+        // Возвращаем true, если это свайп, иначе false для прокрутки
+        return isSwiping
     }
 
     open fun onSwipeRight() {
