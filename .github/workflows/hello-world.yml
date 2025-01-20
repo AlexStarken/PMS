@@ -3,7 +3,7 @@ name: Hello World
 on:
   push:
     branches:
-      - main  # Укажите нужную ветку, если не main
+      - master  # Укажите нужную ветку, если не main
 
 jobs:
   say_hello:
